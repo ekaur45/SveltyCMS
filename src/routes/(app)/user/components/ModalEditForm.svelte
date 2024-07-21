@@ -70,7 +70,7 @@
 
 	async function deleteUser() {
 		const formData = new FormData(formElement); // create a FormData object from the formElement
-		formData.append('id', user.id); // add the id property to the FormData object
+		formData.append('id', user._id); // add the id property to the FormData object
 
 		const res = await axios.post('?/deleteUser', formData);
 
@@ -153,7 +153,7 @@
 					{/if}
 				</div>
 			{/if}
-			{#if (user.id == userId || !isGivenData) && user?.lastAuthMethod == 'token'}
+			{#if (user._id == userId || !isGivenData) && user?.lastAuthMethod == 'token'}
 				<!-- Password field -->
 				<div class="group relative z-0 mb-6 w-full">
 					<iconify-icon icon="mdi:password" width="18" class="absolute left-0 top-3.5 text-gray-400" />
@@ -266,7 +266,7 @@
 
 		<footer class="modal-footer {parent.regionFooter} justify-between">
 			{#if isFirstUser}
-				<button type="button" on:click={deleteUser} class="variant-filled-error btn" disabled={!isFirstUser && (!isGivenData || user.id == userId)}>
+				<button type="button" on:click={deleteUser} class="variant-filled-error btn" disabled={!isFirstUser && (!isGivenData || user._id == userId)}>
 					<iconify-icon icon="icomoon-free:bin" width="24" /><span class="hidden sm:block">{m.button_delete()}</span>
 				</button>
 			{:else}

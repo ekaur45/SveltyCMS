@@ -23,10 +23,12 @@ export async function getData(query: {
 	contentLanguage?: string;
 	filter?: string;
 	sort?: string;
+	_id:string
 }) {
+	debugger
 	const q = toFormData({ method: 'GET', ...query });
 	try {
-		const response = await axios.post('/api/query', q);
+		const response = await axios.post('/api/query', q,{withCredentials: true});
 		return response.data as {
 			entryList: [any];
 			pagesCount: number;

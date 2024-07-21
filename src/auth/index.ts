@@ -124,7 +124,7 @@ export class Auth {
 	createSessionCookie(session: Session): Cookie {
 		return {
 			name: SESSION_COOKIE_NAME,
-			value: session.id,
+			value: session._id,
 			attributes: {
 				sameSite: 'lax', // Set 'SameSite' to 'Lax' or 'Strict' depending on your requirements
 				path: '/',
@@ -148,16 +148,16 @@ export class Auth {
 
 		try {
 			if (await argon2.verify(user.password, password)) {
-				await this.db.updateUserAttributes(user.id, { failedAttempts: 0, lockoutUntil: null });
+				await this.db.updateUserAttributes(user._id, { failedAttempts: 0, lockoutUntil: null });
 				return user;
 			} else {
 				user.failedAttempts++;
 				if (user.failedAttempts >= 5) {
 					const lockoutUntil = new Date(Date.now() + 30 * 60 * 1000);
-					await this.db.updateUserAttributes(user.id, { lockoutUntil });
+					await this.db.updateUserAttributes(user._id, { lockoutUntil });
 					throw new Error('Account is temporarily locked due to too many failed attempts. Please try again later.');
 				} else {
-					await this.db.updateUserAttributes(user.id, { failedAttempts: user.failedAttempts });
+					await this.db.updateUserAttributes(user._id, { failedAttempts: user.failedAttempts });
 					throw new Error('Invalid credentials. Please try again.');
 				}
 			}
@@ -215,7 +215,7 @@ export class Auth {
 		const user = await this.db.getUserByEmail(email);
 		if (!user) return { status: false, message: 'User not found' };
 		const hashedPassword = await argon2.hash(newPassword, argon2Attributes);
-		await this.db.updateUserAttributes(user.id, { password: hashedPassword });
+		await this.db.updateUserAttributes(user._id, { password: hashedPassword });
 		return { status: true, message: 'Password updated successfully' };
 	}
 }

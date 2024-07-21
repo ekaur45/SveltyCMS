@@ -20,7 +20,8 @@ import { translationProgress, contentLanguage, entryData, mode, collections, col
 export const config = {
 	headers: {
 		'Content-Type': 'multipart/form-data'
-	}
+	},
+	withCredentials: true
 };
 
 // This function generates GUI fields based on field parameters and a GUI schema.

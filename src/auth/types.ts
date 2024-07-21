@@ -47,7 +47,7 @@ export interface RateLimit {
 
 // User interface represents a user in the system.
 export interface User {
-	id: string; // Unique identifier for the user
+	_id: string; // Unique identifier for the user
 	email: string; // Email address of the user
 	password?: string; // Hashed password of the user
 	role: string; // Role of the user (e.g., admin, developer, editor, user)
@@ -68,7 +68,7 @@ export interface User {
 
 // Session interface represents a session in the system.
 export interface Session {
-	id: string; // Unique identifier for the session
+	_id: string; // Unique identifier for the session
 	userId: string; // The ID of the user who owns the session
 	expires: Date; // When the session expires
 }
@@ -139,7 +139,7 @@ function checkRateLimit(rateLimits: RateLimit[], userId: string, action: Permiss
 // Main utility function to check if a user has a specific permission in a given context considering both user and role-based permissions.
 export function hasPermission(user: User, roles: Role[], action: PermissionAction, contextId: string, rateLimits: RateLimit[]): boolean {
 	// Check if the action is within the rate limit
-	if (!checkRateLimit(rateLimits, user.id, action)) {
+	if (!checkRateLimit(rateLimits, user._id, action)) {
 		return false;
 	}
 

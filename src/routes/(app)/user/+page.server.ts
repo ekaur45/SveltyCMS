@@ -162,7 +162,7 @@ export const actions: Actions = {
 			const newUser = await auth.createUser({ email, role: role as Roles, lastAuthMethod: 'password', is_registered: false });
 			if (!newUser) return fail(400, { message: 'unknown error' });
 
-			const token = await auth.createToken(newUser.id, expirationTime * 1000);
+			const token = await auth.createToken(newUser._id, expirationTime * 1000);
 			await fetch('/api/sendMail', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -202,7 +202,7 @@ export const actions: Actions = {
 				return { form: changePasswordForm, message: 'User does not exist or session expired' };
 			}
 
-			await auth.updateUserAttributes(user.id, { password, lastAuthMethod: 'password' });
+			await auth.updateUserAttributes(user._id, { password, lastAuthMethod: 'password' });
 
 			return { form: changePasswordForm };
 		} catch (error) {
@@ -374,7 +374,7 @@ export const actions: Actions = {
 			}
 
 			const avatarUrl = await saveAvatarImage(avatarFile, 'avatars');
-			await auth.updateUserAttributes(user.id, { avatar: avatarUrl });
+			await auth.updateUserAttributes(user._id, { avatar: avatarUrl });
 
 			return { success: true, url: avatarUrl };
 		} catch (error) {
@@ -411,7 +411,7 @@ export const actions: Actions = {
 			try {
 				await fs.promises.unlink(avatarFilePath);
 				await mongoose.models['media_images'].deleteOne({ 'thumbnail.url': avatarPath });
-				await auth.updateUserAttributes(user.id, { avatar: '' });
+				await auth.updateUserAttributes(user._id, { avatar: '' });
 
 				return { success: true };
 			} catch (error) {

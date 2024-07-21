@@ -35,7 +35,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		const newUser = await auth.createUser({ email, role, lastAuthMethod: 'password', is_registered: false });
-		const token = await auth.createToken(newUser.id, expirationTime * 1000);
+		const token = await auth.createToken(newUser._id, expirationTime * 1000);
 
 		// Send the token via email (this should be implemented)
 		await fetch('/api/sendMail', {

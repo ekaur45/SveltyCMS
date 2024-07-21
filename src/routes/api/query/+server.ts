@@ -22,14 +22,15 @@ async function checkUserPermissions(data: FormData, cookies: any) {
 		throw new Error('Auth is not initialized');
 	}
 
-	const user = userId ? ((await auth.checkUser({ id: userId })) as User) : ((await auth.validateSession(session_id)) as User);
+	const user = userId ? ((await auth.checkUser({ id: userId })) as User) : ((await auth.validateSession({ sessionId:session_id})) as User);
 
 	if (!user) {
 		throw new Error('Unauthorized');
 	}
 
 	const collectionName = data.get('collectionName') as string;
-	const collection_schema = (await getCollections())[collectionName] as Schema;
+	const _collections=await getCollections();
+	const collection_schema = (_collections)[collectionName] as Schema;
 
 	if (!collection_schema) {
 		throw new Error('Collection not found');
@@ -46,7 +47,7 @@ export const POST = async ({ request, cookies }) => {
 	const data = await request.formData();
 	const method = data.get('method') as string;
 
-	['userId', 'collectionName', 'method'].forEach((key) => data.delete(key));
+	//['userId', 'collectionName', 'method'].forEach((key) => data.delete(key));
 
 	try {
 		const { user, collection_schema, has_read_access, has_write_access } = await checkUserPermissions(data, cookies);

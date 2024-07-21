@@ -39,7 +39,7 @@
 
 	function getTabHeaderVisibility() {
 		// Hide headers only when non-admin and no revision
-		return user.roles !== 'admin' && !$collection.revision;
+		return user?.roles !== 'admin' && !$collection.revision;
 	}
 </script>
 
@@ -70,7 +70,7 @@
 	{/if}
 
 	<!-- API JSON -->
-	{#if user.roles === 'admin'}
+	{#if user?.roles === 'admin'}
 		<Tab bind:group={$tabSet} name="tab3" value={2}>
 			<div class="flex items-center gap-1">
 				<iconify-icon icon="ant-design:api-outlined" width="24" class="text-tertiary-500 dark:text-primary-500" />
@@ -86,7 +86,7 @@
 			<div class="mb-2 text-center text-xs text-error-500">{m.fields_required()}</div>
 			<div class="wrapper">
 				<div class="flex flex-wrap items-center justify-center gap-1 overflow-auto">
-					{#each (fields || $collection.fields).filter((f) => f?.permissions?.[user.role]?.read !== false) as field}
+					{#each (fields || $collection.fields).filter((f) => f?.permissions?.[user?.role]?.read !== false) as field}
 						{#if field.widget}
 							{#key $collection}
 								<div

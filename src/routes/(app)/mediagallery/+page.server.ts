@@ -77,7 +77,7 @@ export const actions: Actions = {
 				const collection = getModel(collectionName);
 				const newMedia = new collection({
 					...fileInfo,
-					user: user.id
+					user: user._id
 				});
 				await newMedia.save();
 			}
