@@ -71,8 +71,11 @@ export async function load({ cookies, route, params }) {
 		}
 		let {_id,...rest} = user;
 		return {
-			_id:_id.toString(),
-			rest
+			user:{
+
+				_id:_id.toString(),
+				...rest
+			}
 		};
 	}
 }
